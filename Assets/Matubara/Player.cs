@@ -14,9 +14,8 @@ public class Player : MonoBehaviour
     float _v;
     List<GameObject> _inventory;
     float _moveSpeed;
-    bool _stun;
-    float _stunTimer = 0;
     GameManager _gamemanager;
+    bool _isStun;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -26,6 +25,10 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+        if (_isStun)
+        {
+            return;
+        }
         _h = Input.GetAxisRaw("Horizontal");
         _v = Input.GetAxisRaw("Vertical");
 
@@ -40,6 +43,10 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (_isStun)
+        {
+            return;
+        }
         Vector2 dir = new Vector2(_h, _v).normalized;
         _rb.velocity = dir * _moveSpeed;
     }
@@ -61,6 +68,13 @@ public class Player : MonoBehaviour
     }
     public void Stun(float time)
     {
-        
+        StartCoroutine(StunTimer(time));
+    }
+    IEnumerator StunTimer(float time)
+    {
+        _isStun = true;
+        _rb.velocity = Vector2.zero;
+        yield return new WaitForSeconds(time);
+        _isStun = false;
     }
 }
