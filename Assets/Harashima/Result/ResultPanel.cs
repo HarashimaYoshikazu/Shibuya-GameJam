@@ -23,7 +23,7 @@ public class ResultPanel : SceneControllerBase
     protected override void OnStart()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
-        //_canvasGroup.alpha = 0f;
+        _canvasGroup.alpha = 0f;
         _touchArea.onClick.AddListener(async () =>
         {
             await UniTask.Delay(TimeSpan.FromSeconds(1f));

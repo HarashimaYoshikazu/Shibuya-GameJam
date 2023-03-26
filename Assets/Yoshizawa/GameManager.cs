@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private PedestalController _pedestal = null;
 
+    [SerializeField]
+    private ResultPanel _resultPanel;
+
     private void Start()
     {
         _pedestal = FindObjectOfType<PedestalController>();
@@ -36,6 +39,7 @@ public class GameManager : MonoBehaviour
 
         if (_timeLimit == 0f && !_isGameFinish)
         {
+            _resultPanel.SetupResultPanel("ああ",100);
             if (_pedestal.IsOnThePedestal)
             {
                 GameClear();

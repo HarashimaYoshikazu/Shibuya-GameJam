@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fadePanel: {fileID: 1182932273}
-  _nextSceneName: SampleScene
+  _nextSceneName: InGame
   _cliclToNextButton: {fileID: 1574482527}
 --- !u!4 &659671873
 Transform:
