@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9033442c52906b429019d71f2fea815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeLimit: 1
+  _timeLimit: 60
   _timeText: {fileID: 0}
   _scoreText: {fileID: 0}
   _gameClear:

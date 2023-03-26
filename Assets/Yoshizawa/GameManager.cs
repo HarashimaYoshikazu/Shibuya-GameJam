@@ -18,16 +18,23 @@ public class GameManager : MonoBehaviour
     private UnityEvent _gameClear = new();
     [SerializeField]
     private UnityEvent _gameOver = new();
+    private bool _isGameFinish = false;
     [SerializeField]
     private PedestalController _pedestal = null;
+
+    private void Start()
+    {
+        _pedestal = FindObjectOfType<PedestalController>();
+        _scoreText.text = _score.ToString();
+    }
 
     private void Update()
     {
         // 制限時間のカウントダウンをする
         _timeLimit = Mathf.Clamp(_timeLimit - Time.deltaTime, 0f, _timeLimit);
-        _timeText.text = _timeLimit.ToString();
+        _timeText.text = _timeLimit.ToString("F2");
 
-        if (_timeLimit == 0f)
+        if (_timeLimit == 0f && !_isGameFinish)
         {
             if (_pedestal.IsOnThePedestal)
             {
@@ -37,6 +44,8 @@ public class GameManager : MonoBehaviour
             {
                 GameOver();
             }
+
+            _isGameFinish = true;
         }
     }
 
@@ -49,10 +58,12 @@ public class GameManager : MonoBehaviour
     private void GameClear()
     {
         _gameClear?.Invoke();
+        Debug.Log("Clear");
     }
 
     private void GameOver()
     {
         _gameOver?.Invoke();
+        Debug.Log("Over");
     }
 }
