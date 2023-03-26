@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
         _v = Input.GetAxisRaw("Vertical");
         _animator.SetFloat("Horizontal", Mathf.Abs(_h));
         _animator.SetFloat("Vertical", _v);
+        _animator.SetFloat("MoveSpeed", _rb.velocity.magnitude);
 
         if (_h > 0)
         {
@@ -68,8 +69,8 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Item") && _inventory.Count < _inventorySize)
         {
-            var score = collision.gameObject.GetComponent<LostItemController>().Score;
-            _gamemanager.ScoreCount(score);
+            //var score = collision.gameObject.GetComponent<LostItemController>().Score;
+            //_gamemanager.ScoreCount(score);
             _inventory.Add(collision.gameObject);
             _moveSpeed = Mathf.Clamp(_moveSpeed -= (float)_inventory.Count / (float)_inventorySize, 1f, _maxSpeed);
             Debug.Log(_moveSpeed);
