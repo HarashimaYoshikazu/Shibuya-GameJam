@@ -7,6 +7,8 @@ using UnityEngine;
 // 日本語対応
 public class PedestalController : MonoBehaviour
 {
+    [SerializeField]
+    private float _setUpPosition = 0f;
     public bool IsOnThePedestal { get; private set; } = false;
     private GameObject _player = null;
     private Rigidbody2D _playerRigidbody2D = null;
@@ -21,7 +23,7 @@ public class PedestalController : MonoBehaviour
             _playerRigidbody2D = rb2D;
         }
         _setPos = transform.position;
-        _setPos.y += 3f;
+        _setPos.y += _setUpPosition;
 
         _collder2D = GetComponent<Collider2D>();
         _collder2D.isTrigger = true;
