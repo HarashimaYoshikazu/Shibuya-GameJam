@@ -21,4 +21,14 @@ public static class Calculator
         else if (random == MAX_VALUE) value = MAX_VALUE;
         return value;
     }
+
+    public static int RandomNumber()
+    {
+        return Random.Range(0, 2);
+    }
+
+    public static int RandomIndex<T>(T[] array)
+    {
+        return Random.Range(0, array.Length);
+    }
 }
