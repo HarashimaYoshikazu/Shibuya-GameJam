@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
         _h = Input.GetAxisRaw("Horizontal");
         _v = Input.GetAxisRaw("Vertical");
         _animator.SetFloat("Horizontal", Mathf.Abs(_h));
+        _animator.SetFloat("Vertical", _v);
 
         if (_h > 0)
         {
