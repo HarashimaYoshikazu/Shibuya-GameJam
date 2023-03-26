@@ -34,6 +34,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected Rigidbody2D _rb = null;
     protected Vector3 _velocity;
     protected bool _isPausing = false;
+    private SpriteRenderer _spriteRenderer = null;
     private float _angle = 45f;
 
     #endregion
@@ -43,6 +44,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     #endregion
@@ -76,13 +78,24 @@ public abstract class EnemyBase : MonoBehaviour
 
     public abstract void OnMove();
 
+    protected void SetFlip(Rigidbody2D rb)
+    {
+        if(rb.velocity.x > 0)
+        {
+            _spriteRenderer.flipX = true;
+        }
+        else if(rb.velocity.x < 0 )
+        {
+            _spriteRenderer.flipX = false;
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         Vector3 posDelta = collision.transform.position - transform.position;
         float targetAngle = Vector3.Angle(_rb.velocity, posDelta);
         if (targetAngle < _angle)
         {
-            Debug.Log("");
             //if(TryGetComponent<Player>)
             //{
 

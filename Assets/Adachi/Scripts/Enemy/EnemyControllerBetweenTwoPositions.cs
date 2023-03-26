@@ -6,9 +6,7 @@ using UnityEngine;
 
 public class EnemyControllerBetweenTwoPositions : EnemyBase
 {
-    [SerializeField]
-    [Header("’âŽ~ŽžŠÔ")]
-    private float _stopTime = 3f;
+    private const float WAIT_TIME = 1f;
 
     protected override void Awake()
     {
@@ -21,6 +19,9 @@ public class EnemyControllerBetweenTwoPositions : EnemyBase
     {
         var pos = _twoPos.MaxValue.position;
         _rb.velocity = (pos - transform.position).normalized * _speed;
+        SetFlip(_rb);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(WAIT_TIME));
 
         var pattern0 = transform.position.x > pos.x && transform.position.y > pos.y;
         var pattern1 = transform.position.x > pos.x && transform.position.y < pos.y;

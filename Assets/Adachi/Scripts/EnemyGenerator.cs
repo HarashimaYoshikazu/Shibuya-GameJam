@@ -8,7 +8,7 @@ public class EnemyGenerator : MonoBehaviour
 {
     [SerializeField]
     [Header("一般人")]
-    private EnemyBase _enemy = null;
+    private EnemyBase[] _enemy = null;
 
     [SerializeField]
     [Header("クールタイム")]
@@ -30,7 +30,7 @@ public class EnemyGenerator : MonoBehaviour
             var coolTime = Calculator.RandomTime(_coolTime.MinValue, _coolTime.MaxValue);
             await UniTask.Delay(TimeSpan.FromSeconds(coolTime));
 
-            var enemy = Instantiate(_enemy);
+            var enemy = Instantiate(_enemy[Calculator.RandomIndex(_enemy)]);
             enemy.transform.SetParent(transform);
             var twoPos = _twoPos[Calculator.RandomIndex(_twoPos)];
             var randomNum = Calculator.RandomNumber();

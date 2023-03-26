@@ -38,6 +38,7 @@ public class EnemyControllerFree : EnemyBase
             var stopTime = Calculator.RandomTime(_stopTime.MinValue, _stopTime.MaxValue);
             var velocity = new Vector3(Calculator.RandomValue(), Calculator.RandomValue(), 0f);
             _rb.velocity = velocity * _speed;
+            SetFlip(_rb);
             await UniTask.Delay(TimeSpan.FromSeconds(moveTime));
             _rb.velocity = Vector2.zero;
             await UniTask.Delay(TimeSpan.FromSeconds(stopTime));
