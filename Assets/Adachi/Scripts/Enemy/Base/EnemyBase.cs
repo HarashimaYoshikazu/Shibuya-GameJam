@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected Vector3 _velocity;
     protected bool _isPausing = false;
     private SpriteRenderer _spriteRenderer = null;
+    private Animator _animator = null;
     private float _angle = 45f;
 
     #endregion
@@ -44,6 +46,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -90,7 +93,7 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private async void OnTriggerStay2D(Collider2D collision)
     {
         Vector3 posDelta = collision.transform.position - transform.position;
         float targetAngle = Vector3.Angle(_rb.velocity, posDelta);
@@ -98,7 +101,11 @@ public abstract class EnemyBase : MonoBehaviour
         {
             //if(TryGetComponent<Player>)
             //{
-
+                _animator.SetBool("IsSurprised", true);
+                var velocity = _rb.velocity;
+                await UniTask.Delay(TimeSpan.FromSeconds(1f));
+                _animator.SetBool("IsSurprised", false);
+                _rb.velocity = velocity;
             //}
         }
     }
