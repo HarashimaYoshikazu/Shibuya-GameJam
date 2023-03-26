@@ -33,7 +33,9 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (_isStun)
+        if (_isStun 
+            //|| _pedController.IsOnThePedestal == true
+            )
         {
             return;
         }
@@ -53,7 +55,9 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_isStun)
+        if (_isStun 
+            //|| _pedController.IsOnThePedestal == true
+            )
         {
             return;
         }
