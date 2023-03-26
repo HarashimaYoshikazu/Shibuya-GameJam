@@ -3,24 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum Rank
-{
-    First,
-    Second
-}
 public class ApplicationManager : MonoBehaviour
 {
-    Dictionary<Rank, string> _rankingDictionary = new Dictionary<Rank, string>();
+    List<RankingUser> _rankingUsers = new List<RankingUser>();
 
-    public string[] PlayerNames => _rankingDictionary.Values.ToArray();
+    public RankingUser[] RankingUsers => _rankingUsers.ToArray();
+
+    private static ApplicationManager _instanse;
+    public static ApplicationManager Instanse => _instanse;
+
+    private void Awake()
+    {
+        if(Instanse)
+        {
+            Destroy(this.gameObject);
+        }
+        _instanse = this;
+    }
 
     private void Start()
     {
         DontDestroyOnLoad(this);
     }
 
-    public void AddRankingDictionary(Rank rank,string playerName)
+    public void AddRankingList(string playerName, int score)
     {
-        _rankingDictionary.Add(rank,playerName);
+
+        var newuser = new RankingUser()
+        {
+            PlayerName = playerName,
+            Score = score
+        };
+        _rankingUsers.Add(newuser);
+        _rankingUsers.OrderBy(user => user.Score);
+        _rankingUsers.RemoveAt(_rankingUsers.Count-1);
+
     }
+}
+
+public class RankingUser
+{
+    public string PlayerName;
+    public int Score;
 }
