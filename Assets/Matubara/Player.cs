@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     PedestalController _pedController;
     [SerializeField] Sprite _sprite;
     SpriteRenderer _spriteRenderer;
+    Animator _animator;
     
     void Start()
     {
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
         _moveSpeed = _maxSpeed;
         _pedController = FindObjectOfType<PedestalController>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
     }
     void Update()
     {
@@ -37,6 +39,7 @@ public class Player : MonoBehaviour
         }
         _h = Input.GetAxisRaw("Horizontal");
         _v = Input.GetAxisRaw("Vertical");
+        _animator.SetFloat("Horizontal", Mathf.Abs(_h));
 
         if (_h > 0)
         {
