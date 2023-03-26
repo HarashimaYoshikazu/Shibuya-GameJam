@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _inventory = new List<GameObject>();
-        _gamemanager = GetComponent<GameManager>();
+        _gamemanager = FindObjectOfType<GameManager>();
         _moveSpeed = _maxSpeed;
     }
     void Update()
@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Item") && _inventory.Count < _inventorySize)
         {
             var score = collision.gameObject.GetComponent<LostItemController>().Score;
+            _gamemanager.ScoreCount(score);
             _inventory.Add(collision.gameObject);
             _moveSpeed = Mathf.Clamp(_moveSpeed -= (float)_inventory.Count / (float)_inventorySize, 1f, _maxSpeed);
             Debug.Log(_moveSpeed);
