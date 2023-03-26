@@ -16,12 +16,20 @@ public class Player : MonoBehaviour
     float _moveSpeed;
     GameManager _gamemanager;
     bool _isStun;
+    PedestalController _pedController;
+    [SerializeField] Sprite _sprite;
+    SpriteRenderer _spriteRenderer;
+    Animator _animator;
+    
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _inventory = new List<GameObject>();
         _gamemanager = FindObjectOfType<GameManager>();
         _moveSpeed = _maxSpeed;
+        _pedController = FindObjectOfType<PedestalController>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
     }
     void Update()
     {
@@ -31,6 +39,7 @@ public class Player : MonoBehaviour
         }
         _h = Input.GetAxisRaw("Horizontal");
         _v = Input.GetAxisRaw("Vertical");
+        _animator.SetFloat("Horizontal", Mathf.Abs(_h));
 
         if (_h > 0)
         {
@@ -72,9 +81,12 @@ public class Player : MonoBehaviour
     }
     IEnumerator StunTimer(float time)
     {
+        Sprite tmp = _spriteRenderer.sprite;
+        _spriteRenderer.sprite = _sprite;
         _isStun = true;
         _rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(time);
+        _spriteRenderer.sprite = tmp;
         _isStun = false;
     }
 }
