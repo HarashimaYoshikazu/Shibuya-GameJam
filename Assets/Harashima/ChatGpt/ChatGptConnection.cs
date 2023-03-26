@@ -15,10 +15,10 @@ public class ChatGPTConnection
     //会話履歴を保持するリスト
     private readonly List<ChatGPTMessageModel> _messageList = new();
 
-    public ChatGPTConnection(string messageRole,string messageContent)
+    public ChatGPTConnection(string messageContent)
     {
         _messageList.Add(
-            new ChatGPTMessageModel() { role = messageRole, content = messageContent });
+            new ChatGPTMessageModel() { role = "system", content = messageContent });
     }
 
     public async UniTask<ChatGPTResponseModel> RequestAsync(string userMessage)
@@ -31,7 +31,7 @@ public class ChatGPTConnection
         //OpenAIのAPIリクエストに必要なヘッダー情報を設定
         var headers = new Dictionary<string, string>
             {
-                {"Authorization", "Bearer " + _apiKey},
+                {"Authorization", "Bearer " + "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"},
                 {"Content-type", "application/json"},
                 {"X-Slack-No-Retry", "1"}
             };
