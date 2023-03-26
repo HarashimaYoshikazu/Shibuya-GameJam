@@ -79,9 +79,10 @@ public abstract class EnemyBase : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         Vector3 posDelta = collision.transform.position - transform.position;
-        float targetAngle = Vector3.Angle(transform.up, posDelta);
+        float targetAngle = Vector3.Angle(_rb.velocity, posDelta);
         if (targetAngle < _angle)
         {
+            Debug.Log("");
             //if(TryGetComponent<Player>)
             //{
 
