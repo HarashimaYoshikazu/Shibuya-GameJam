@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        if (_isStun || _pedController.IsOnThePedestal == true/* || GameManager.Instance.IsPause*/)
         {
             return;
         }
@@ -107,6 +107,8 @@ public class Player : MonoBehaviour
         {
             return;
         }
+        _isStun = true;
+        _rb.velocity = Vector2.zero;
         StartCoroutine(StunTimer(time));
     }
     IEnumerator StunTimer(float time)
