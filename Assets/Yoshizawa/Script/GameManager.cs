@@ -32,6 +32,12 @@ public class GameManager : MonoBehaviour
 
     public bool IsPause = false;
 
+    private string _playerName;
+    public void SetPlayerName(string name)
+    {
+        _playerName = name;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -61,7 +67,8 @@ public class GameManager : MonoBehaviour
 
         if (_timeLimit == 0f && !_isGameFinish)
         {
-            _resultPanel.SetupResultPanel("ああ",100);
+            _resultPanel.SetupResultPanel(_playerName,_score);
+            _enemyGenerator.IsEnd = true;
             if (_pedestal.IsOnThePedestal)
             {
                 GameClear();

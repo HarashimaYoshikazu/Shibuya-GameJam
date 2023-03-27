@@ -30,12 +30,15 @@ public class StartPanel : MonoBehaviour
     public void Setup()
     {
         _button.onClick.AddListener(async () =>
-        {
-            _canvasGroup.blocksRaycasts = false;         
+        {                
             if (_nameInputField.text == "" || _nameInputField.text == null)
             {
                 return;
             }
+            _canvasGroup.blocksRaycasts = false;
+            GameManager.Instance.SetPlayerName(_nameInputField.text);
+
+            // Gptリクエスト
             var chatGPTConnection = new ChatGPTConnection("今から名前を提示するのでそれに対して以下の条件に沿った反応を20文字以内で出力してください。・語尾に「わん」を付けてください。・渋谷の町に関連する単語を入れてください。・面白い単語を入れてください。・提示した名前に関して言及してください。");
             _loadingPanel.alpha= 1.0f;
             _loadingPanel.blocksRaycasts = true;
