@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField, Header("プレイヤーの最低速度")] float _minSpeed = 1;
     [SerializeField, Header("プレイヤーが落とし物を持てる最大数")] int _inventorySize = 10;
     [SerializeField, Header("疲労時に表示する画像のゲームオブジェクト")] GameObject _sweat;
-    [SerializeField, Header("スタンしたときに表示するパーティクル")] ParticleSystem _stunParticle;
+    [SerializeField, Header("スタンしたときに表示するパーティクル")] GameObject _stunParticle;
     [SerializeField] Transform _particleSpawnPoint;
     Rigidbody2D _rb;
     float _h;
@@ -36,10 +36,10 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        //if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
-        //{
-        //    return;
-        //}
+        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        {
+            return;
+        }
 
         if (_inventory > _inventorySize / 2)
         {
@@ -52,10 +52,10 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        //if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
-        //{
-        //    return;
-        //}
+        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        {
+            return;
+        }
 
         PlayerMove();
     }
