@@ -30,11 +30,13 @@ public class StartPanel : MonoBehaviour
     public void Setup()
     {
         _button.onClick.AddListener(async () =>
-        {                
+        { 
             if (_nameInputField.text == "" || _nameInputField.text == null)
             {
                 return;
             }
+            _nameInputField.gameObject.SetActive(false);
+            _button.gameObject.SetActive(false);
             _canvasGroup.blocksRaycasts = false;
             GameManager.Instance.SetPlayerName(_nameInputField.text);
 
