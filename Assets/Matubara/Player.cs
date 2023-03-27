@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField, Header("プレイヤーが落とし物を持てる最大数")] int _inventorySize = 10;
     [SerializeField, Header("疲労時に表示する画像のゲームオブジェクト")] GameObject _sweat;
     [SerializeField, Header("スタンしたときに表示するパーティクル")] ParticleSystem _stunParticle;
+    [SerializeField] Transform _particleSpawnPoint;
     Rigidbody2D _rb;
     float _h;
     float _v;
@@ -35,10 +36,10 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
-        {
-            return;
-        }
+        //if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        //{
+        //    return;
+        //}
 
         if (_inventory > _inventorySize / 2)
         {
@@ -51,10 +52,10 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
-        {
-            return;
-        }
+        //if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        //{
+        //    return;
+        //}
 
         PlayerMove();
     }
@@ -109,7 +110,7 @@ public class Player : MonoBehaviour
         Sprite tmp = _spriteRenderer.sprite;
         _spriteRenderer.sprite = _stunsprite;
         _isStun = true;
-        _stunParticle.Play();
+        Instantiate(_stunParticle, _particleSpawnPoint.position, transform.rotation);
         _rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(time);
         _spriteRenderer.sprite = tmp;
