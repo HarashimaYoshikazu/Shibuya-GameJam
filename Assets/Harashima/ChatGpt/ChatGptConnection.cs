@@ -11,14 +11,15 @@ using UnityEngine.Networking;
 /// </summary>
 public class ChatGPTConnection
 {
-    private const string _apiKey = "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";
     //会話履歴を保持するリスト
     private readonly List<ChatGPTMessageModel> _messageList = new();
+    string _apikey;
 
-    public ChatGPTConnection(string messageContent)
+    public ChatGPTConnection(string messageContent,string apikey)
     {
         _messageList.Add(
             new ChatGPTMessageModel() { role = "system", content = messageContent });
+        _apikey = apikey;
     }
 
     public async UniTask<string> RequestAsync(string userMessage)
@@ -31,7 +32,7 @@ public class ChatGPTConnection
         //OpenAIのAPIリクエストに必要なヘッダー情報を設定
         var headers = new Dictionary<string, string>
             {
-                {"Authorization", "Bearer " + "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"},
+                {"Authorization", "Bearer " + _apikey},
                 {"Content-type", "application/json"},
                 {"X-Slack-No-Retry", "1"}
             };

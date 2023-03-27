@@ -14,9 +14,10 @@ public class ApplicationManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instanse)
+        if(Instanse!=null && _instanse != this)
         {
             Destroy(this.gameObject);
+            return;
         }
         _instanse = this;
     }
