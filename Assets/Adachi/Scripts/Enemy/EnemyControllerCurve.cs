@@ -6,19 +6,10 @@ using UnityEngine;
 public class EnemyControllerCurve : EnemyBase
 {
     [SerializeField]
-    [Header("ˆÚ“®ŽžŠÔ")]
-    private float _time = 5f;
-
-    [SerializeField]
     [Header("”¼Œa")]
-    private float _radius = 0.5f;
+    private float _radius = 1f;
 
-    [SerializeField]
-    private float _wave = 5f;
-
-    private float _deg = 0f;
-
-    private const float OFFSET = 5f;
+    private const float OFFSET = 1f;
 
     protected override void Awake()
     {
@@ -30,20 +21,73 @@ public class EnemyControllerCurve : EnemyBase
     {
         var min = _twoPos.MinValue.transform.position;
         var max = _twoPos.MaxValue.transform.position;
-        var center = (min + max) * 0.5f;//2“_‚ÌŠÔ
-        var firstCenter = (min + center) * 0.5f;//Å‰‚Ì“_‚Æ‚Q“_‚ÌŠÔ‚Æ‚ÌŠÔ
-        var endCenter = (center + max) * 0.5f;//‚Q“_‚ÌŠÔ‚ÆÅŒã‚Ì“_‚Æ‚ÌŠÔ
-        //_rb.velocity = (transform.position - min).normalized * _speed;
+        var end = max - min;
+        var _deg = 0f;
 
-        while (true)
+        var pos = _twoPos.MaxValue.position;
+        var pattern0 = transform.position.x > pos.x && transform.position.y > pos.y;
+        var pattern1 = transform.position.x > pos.x && transform.position.y < pos.y;
+        var pattern2 = transform.position.x < pos.x && transform.position.y > pos.y;
+        var pattern3 = transform.position.x < pos.x && transform.position.y < pos.y;
+        if (pattern0)
         {
-            var x = _radius * Mathf.Cos(_deg);
-            var y = _radius * Mathf.Sin(_deg);
-            var z = 0f;
-            _rb.velocity = new Vector3(x, y, z);
-            _deg += 2 * Mathf.PI / 360f;
-            //_rb.velocity = new Vector3(Mathf.Cos(_speed), _rb.velocity.y);
-            await UniTask.NextFrame();
+            while (true)
+            {
+                float time = 1.0f;
+                float f = 1.0f / time;
+                var x = _radius * Mathf.Cos(Time.time);
+                var y = _radius * Mathf.Sin(2 * Mathf.PI * f * Time.time);
+                _rb.velocity = new Vector2(x, y) * end.magnitude;
+                _deg += 2 * Mathf.PI / 360f;
+                if (transform.position.x < pos.x && transform.position.y < pos.y) break;
+                await UniTask.NextFrame();
+            }
+            pos = new Vector3(_twoPos.MaxValue.position.x, _twoPos.MaxValue.position.y, _twoPos.MaxValue.position.z);
+        }
+        else if (pattern1)
+        {
+            while (true)
+            {
+                float time = 1.0f;
+                float f = 1.0f / time;
+                var x = _radius * Mathf.Cos(Time.time);
+                var y = _radius * Mathf.Sin(2 * Mathf.PI * f * Time.time);
+                _rb.velocity = new Vector2(x, y) * end.magnitude;
+                _deg += 2 * Mathf.PI / 180f;
+                if (transform.position.x < pos.x && transform.position.y > pos.y) break;
+                await UniTask.NextFrame();
+            }
+            pos = new Vector3(_twoPos.MaxValue.position.x, _twoPos.MaxValue.position.y, _twoPos.MaxValue.position.z);
+        }
+        else if (pattern2)
+        {
+            while (true)
+            {
+                float time = 1.0f;
+                float f = 1.0f / time;
+                var x = _radius * Mathf.Cos(Time.time);
+                var y = _radius * Mathf.Sin(2 * Mathf.PI * f * Time.time);
+                _rb.velocity = new Vector2(x, y) * end.magnitude;
+                _deg += 2 * Mathf.PI / 180f;
+                if (transform.position.x > pos.x && transform.position.y < pos.y) break;
+                await UniTask.NextFrame();
+            }
+            pos = new Vector3(_twoPos.MaxValue.position.x, _twoPos.MaxValue.position.y, _twoPos.MaxValue.position.z);
+        }
+        else if (pattern3)
+        {
+            while (true)
+            {
+                float time = 1.0f;
+                float f = 1.0f / time;
+                var x = _radius * Mathf.Cos(Time.time);
+                var y = _radius * Mathf.Sin(2 * Mathf.PI * f * Time.time);
+                _rb.velocity = new Vector2(x, y) * end.magnitude;
+                _deg += 2 * Mathf.PI / 180f;
+                if (transform.position.x > pos.x && transform.position.y > pos.y) break;
+                await UniTask.NextFrame();
+            }
+            pos = new Vector3(_twoPos.MaxValue.position.x, _twoPos.MaxValue.position.y, _twoPos.MaxValue.position.z);
         }
 
         Destroy(gameObject);
