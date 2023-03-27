@@ -50,7 +50,8 @@ public class StartPanel : MonoBehaviour
             {
                 _canvasGroup.alpha = value;
             }).ToUniTask();
-            GameManager.Instance.IsPause = true;
+            GameManager.Instance.OnStart();
+            GameManager.Instance.IsPause = false;
         });
     }
 }

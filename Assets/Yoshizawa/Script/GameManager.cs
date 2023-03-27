@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private ResultPanel _resultPanel;
 
+    [SerializeField]
+    EnemyGenerator _enemyGenerator;
+
     public bool IsPause = false;
 
     private void Awake()
@@ -37,6 +40,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance= this;
+        IsPause= true;
     }
 
     private void Start()
@@ -87,5 +91,10 @@ public class GameManager : MonoBehaviour
     {
         _gameOver?.Invoke();
         Debug.Log("Over");
+    }
+
+    public void OnStart()
+    {
+        _enemyGenerator.Generate();
     }
 }

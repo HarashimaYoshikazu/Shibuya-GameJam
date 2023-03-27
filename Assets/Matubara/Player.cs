@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause == false)
+        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
         {
             return;
         }
@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause == false)
+        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
         {
             return;
         }
