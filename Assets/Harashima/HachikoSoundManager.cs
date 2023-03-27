@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class SoundManager : MonoBehaviour
+public class HachikoSoundManager : MonoBehaviour
 {
-    private SoundManager _instance;
-    public SoundManager Instance => _instance;
+    private static HachikoSoundManager _instance;
+    public static HachikoSoundManager Instance => _instance;
 
     private AudioSource _audioSource;
 
