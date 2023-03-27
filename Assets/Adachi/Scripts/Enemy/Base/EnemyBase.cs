@@ -103,11 +103,8 @@ public abstract class EnemyBase : MonoBehaviour
             {
                 player.Stun(_stunTime);
                 _animator?.SetBool("IsSurprised", true);
-                var velocity = _rb.velocity;
-                _rb.velocity = Vector2.zero;
                 await UniTask.Delay(TimeSpan.FromSeconds(1f));
                 _animator?.SetBool("IsSurprised", false);
-                _rb.velocity = velocity;
             }
         }
     }
