@@ -1186,6 +1186,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3821824124893058289, guid: 589b2fc29ab72a942889aac5436d05ed, type: 3}
+      propertyPath: _godtime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3821824124893058289, guid: 589b2fc29ab72a942889aac5436d05ed, type: 3}
       propertyPath: _stunParticle
       value: 
       objectReference: {fileID: 1993891011918894483, guid: eea6b9c45a494994f94d901680759894, type: 3}

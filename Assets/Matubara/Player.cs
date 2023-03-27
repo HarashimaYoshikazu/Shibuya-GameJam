@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     Animator _animator;
     int _tmpScore = 0;
     [SerializeField,Tooltip("この値が増えるほど、アイテムを拾ったときのスピードの減少率が減る")] float _reduce = 0;
+    bool _god = false;
+    [SerializeField] float _godtime = 0;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -101,7 +103,7 @@ public class Player : MonoBehaviour
     }
     public void Stun(float time)
     {
-        if (_isStun)
+        if (_isStun || _god)
         {
             return;
         }
@@ -118,6 +120,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(time);
         _spriteRenderer.sprite = tmp;
         _isStun = false;
+        _god = true;
+        yield return new WaitForSeconds(_godtime);
+        _god = false;
         _animator.enabled = true;
     }
 }
