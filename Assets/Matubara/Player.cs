@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     SpriteRenderer _spriteRenderer;
     Animator _animator;
     int _tmpScore = 0;
-    
+
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true)
+        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause == false)
         {
             return;
         }
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true)
+        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause == false)
         {
             return;
         }
