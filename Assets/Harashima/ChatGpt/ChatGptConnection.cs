@@ -31,7 +31,7 @@ public class ChatGPTConnection
         //OpenAIのAPIリクエストに必要なヘッダー情報を設定
         var headers = new Dictionary<string, string>
             {
-                {"Authorization", "Bearer " + "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"},
+                {"Authorization", "Bearer " + "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"},
                 {"Content-type", "application/json"},
                 {"X-Slack-No-Retry", "1"}
             };
