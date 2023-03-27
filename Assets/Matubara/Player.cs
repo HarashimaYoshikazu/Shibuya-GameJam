@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -12,8 +11,8 @@ public class Player : MonoBehaviour
     Rigidbody2D _rb;
     float _h;
     float _v;
-    /// <summary> 落とし物を格納しておくリスト </summary>
-    List<GameObject> _inventory;
+    /// <summary> 落とし物を拾った数を保持しておく変数 </summary>
+    float _inventory;
     float _moveSpeed;
     GameManager _gamemanager;
     bool _isStun;
@@ -26,7 +25,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _inventory = new List<GameObject>();
         _gamemanager = FindObjectOfType<GameManager>();
         _moveSpeed = _maxSpeed;
         _pedController = FindObjectOfType<PedestalController>();
@@ -57,6 +55,15 @@ public class Player : MonoBehaviour
         {
             this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x), this.transform.localScale.y, this.transform.localScale.z);
         }
+
+        if (_moveSpeed < _maxSpeed / 2)
+        {
+            _sweat.SetActive(true);
+        }
+        else
+        {
+            _sweat.SetActive(false);
+        }
     }
     private void FixedUpdate()
     {
@@ -69,19 +76,19 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Item") && _inventory.Count < _inventorySize) // プレイヤーがアイテムに触れたときの処理
+        if (collision.gameObject.CompareTag("Item") && _inventory < _inventorySize) // プレイヤーがアイテムに触れたときの処理
         {
             var score = collision.gameObject.GetComponent<LostItemController>().Score; // 触れたアイテムからスコアの値を取得
             _tmpScore += score;
-            _inventory.Add(collision.gameObject); // 触れたアイテムをリストに格納
-            _moveSpeed = Mathf.Clamp(_moveSpeed *= 1 - (float)_inventory.Count / (float)_inventorySize, 1f, _maxSpeed); // アイテムの所持数に応じて移動速度を減らす
+            _inventory++; // 触れたアイテムをリストに格納
+            _moveSpeed = Mathf.Clamp(_moveSpeed *= 1 - _inventory / (float)_inventorySize, 1f, _maxSpeed); // アイテムの所持数に応じて移動速度を減らす
             Debug.Log(_moveSpeed);
         }
         else if (collision.gameObject.CompareTag("Koban")) // プレイヤーが交番のコライダーに触れたときの処理
         {
             _gamemanager.ScoreCount(_tmpScore);
             _tmpScore = 0;
-            _inventory.RemoveRange(0, _inventory.Count);
+            _inventory = 0;
             _moveSpeed = _maxSpeed;
         }
     }
