@@ -46,7 +46,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
+        TryGetComponent(out _animator);
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -99,14 +99,16 @@ public abstract class EnemyBase : MonoBehaviour
         float targetAngle = Vector3.Angle(_rb.velocity, posDelta);
         if (targetAngle < _angle)
         {
-            //if(TryGetComponent<Player>)
-            //{
-                _animator.SetBool("IsSurprised", true);
+            if (collision.TryGetComponent(out Player player))
+            {
+                player.Stun(_stunTime);
+                _animator?.SetBool("IsSurprised", true);
                 var velocity = _rb.velocity;
+                _rb.velocity = Vector2.zero;
                 await UniTask.Delay(TimeSpan.FromSeconds(1f));
-                _animator.SetBool("IsSurprised", false);
+                _animator?.SetBool("IsSurprised", false);
                 _rb.velocity = velocity;
-            //}
+            }
         }
     }
 

@@ -16,7 +16,7 @@ public class EnemyGenerator : MonoBehaviour
 
     [SerializeField]
     [Header("2ì_ÇÃèÍèä")]
-    private Value<Transform>[] _twoPos;
+    private Value<EnemyTrash>[] _enemyTrash;
 
     private void Awake()
     {
@@ -32,10 +32,10 @@ public class EnemyGenerator : MonoBehaviour
 
             var enemy = Instantiate(_enemy[Calculator.RandomIndex(_enemy)]);
             enemy.transform.SetParent(transform);
-            var twoPos = _twoPos[Calculator.RandomIndex(_twoPos)];
+            var twoPos = _enemyTrash[Calculator.RandomIndex(_enemyTrash)];
             var randomNum = Calculator.RandomNumber();
-            if(randomNum == 0) enemy.Init(twoPos.MinValue, twoPos.MaxValue);
-            else enemy.Init(twoPos.MaxValue, twoPos.MinValue);
+            if(randomNum == 0) enemy.Init(twoPos.MinValue.transform, twoPos.MaxValue.transform);
+            else enemy.Init(twoPos.MaxValue.transform, twoPos.MinValue.transform);
             enemy.transform.position = enemy.TwoPos.MinValue.position;
             enemy.OnMove();
         }
