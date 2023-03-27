@@ -99,11 +99,12 @@ public abstract class EnemyBase : MonoBehaviour
         float targetAngle = Vector3.Angle(_rb.velocity, posDelta);
         if (targetAngle < _angle)
         {
-            if (TryGetComponent(out Player player))
+            if (collision.TryGetComponent(out Player player))
             {
                 player.Stun(_stunTime);
                 _animator?.SetBool("IsSurprised", true);
                 var velocity = _rb.velocity;
+                _rb.velocity = Vector2.zero;
                 await UniTask.Delay(TimeSpan.FromSeconds(1f));
                 _animator?.SetBool("IsSurprised", false);
                 _rb.velocity = velocity;
