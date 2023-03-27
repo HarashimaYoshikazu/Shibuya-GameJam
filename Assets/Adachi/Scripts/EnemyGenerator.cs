@@ -18,10 +18,16 @@ public class EnemyGenerator : MonoBehaviour
     [Header("2ì_ÇÃèÍèä")]
     private Value<EnemyTrash>[] _enemyTrash;
 
+    public bool IsEnd = false;
+
     public async void Generate()
     {
         while (true)
         {
+            if(IsEnd)
+            {
+                break;
+            }
             var coolTime = Calculator.RandomTime(_coolTime.MinValue, _coolTime.MaxValue);
             await UniTask.Delay(TimeSpan.FromSeconds(coolTime));
 

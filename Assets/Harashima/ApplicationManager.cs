@@ -36,8 +36,10 @@ public class ApplicationManager : MonoBehaviour
         };
         _rankingUsers.Add(newuser);
         _rankingUsers.OrderBy(user => user.Score);
-        _rankingUsers.RemoveAt(_rankingUsers.Count-1);
-
+        if (_rankingUsers.Count>5)
+        {
+            _rankingUsers.RemoveAt(_rankingUsers.Count - 1);
+        }    
     }
 }
 
