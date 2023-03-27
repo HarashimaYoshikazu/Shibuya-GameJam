@@ -18,12 +18,7 @@ public class EnemyGenerator : MonoBehaviour
     [Header("2“_‚ÌêŠ")]
     private Value<EnemyTrash>[] _enemyTrash;
 
-    private void Awake()
-    {
-        Generate();
-    }
-
-    private async void Generate()
+    public async void Generate()
     {
         while (true)
         {
