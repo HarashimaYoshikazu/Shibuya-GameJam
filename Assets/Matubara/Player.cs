@@ -5,23 +5,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField, Header("ƒvƒŒƒCƒ„[‚ÌÅ‘å‘¬“x")] float _maxSpeed;
-    [SerializeField, Header("ƒvƒŒƒCƒ„[‚ª—‚Æ‚µ•¨‚ğ‚Ä‚éÅ‘å”")] int _inventorySize;
-    [SerializeField, Header("”æ˜J‚É•\¦‚·‚é‰æ‘œ‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg")] GameObject _sweat;
+    [SerializeField, Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æœ€å¤§é€Ÿåº¦")] float _maxSpeed = 10;
+    [SerializeField, Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æœ€ä½é€Ÿåº¦")] float _minSpeed = 1;
+    [SerializeField, Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒè½ã¨ã—ç‰©ã‚’æŒã¦ã‚‹æœ€å¤§æ•°")] int _inventorySize = 10;
+    [SerializeField, Header("ç–²åŠ´æ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")] GameObject _sweat;
     Rigidbody2D _rb;
     float _h;
     float _v;
-    /// <summary> —‚Æ‚µ•¨‚ğE‚Á‚½”‚ğ•Û‚µ‚Ä‚¨‚­•Ï” </summary>
+    /// <summary> è½ã¨ã—ç‰©ã‚’æ‹¾ã£ãŸæ•°ã‚’ä¿æŒã—ã¦ãŠãå¤‰æ•° </summary>
     float _inventory;
     float _moveSpeed;
     GameManager _gamemanager;
     bool _isStun;
     PedestalController _pedController;
-    [SerializeField, Header("ƒXƒ^ƒ“‚µ‚½‚Æ‚«‚ÉØ‚è‘Ö‚¦‚é‰æ‘œ")] Sprite _stunsprite;
+    [SerializeField, Header("ã‚¹ã‚¿ãƒ³ã—ãŸã¨ãã«åˆ‡ã‚Šæ›¿ãˆã‚‹ç”»åƒ")] Sprite _stunsprite;
     SpriteRenderer _spriteRenderer;
     Animator _animator;
     int _tmpScore = 0;
-
+    [SerializeField] float _reduce = 0;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -37,16 +38,11 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        // “ü—Í‚Ìó‚¯æ‚è
+        // å…¥åŠ›ã®å—ã‘å–ã‚Š
         _h = Input.GetAxisRaw("Horizontal");
         _v = Input.GetAxisRaw("Vertical");
 
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìˆ—
-        _animator.SetFloat("Horizontal", Mathf.Abs(_h));
-        _animator.SetFloat("Vertical", _v);
-        _animator.SetFloat("MoveSpeed", _rb.velocity.magnitude);
-
-        // ƒvƒŒƒCƒ„[‚ÌˆÚ“®‚·‚é•ûŒü‚É‰‚¶‚ÄƒvƒŒƒCƒ„[‚ğ”½“]‚³‚¹‚éˆ—
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•ã™ã‚‹æ–¹å‘ã«å¿œã˜ã¦ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’åè»¢ã•ã›ã‚‹å‡¦ç†
         if (_h > 0)
         {
             this.transform.localScale = new Vector3(-1 * Mathf.Abs(this.transform.localScale.x), this.transform.localScale.y, this.transform.localScale.z);
@@ -56,7 +52,7 @@ public class Player : MonoBehaviour
             this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x), this.transform.localScale.y, this.transform.localScale.z);
         }
 
-        if (_moveSpeed < _maxSpeed / 2)
+        if (_inventory > _inventorySize / 2)
         {
             _sweat.SetActive(true);
         }
@@ -73,18 +69,22 @@ public class Player : MonoBehaviour
         }
         Vector2 dir = new Vector2(_h, _v).normalized;
         _rb.velocity = dir * _moveSpeed;
+
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å‡¦ç†
+        _animator.SetFloat("Horizontal", Mathf.Abs(_h));
+        _animator.SetFloat("Vertical", _v);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Item") && _inventory < _inventorySize) // ƒvƒŒƒCƒ„[‚ªƒAƒCƒeƒ€‚ÉG‚ê‚½‚Æ‚«‚Ìˆ—
+        if (collision.gameObject.CompareTag("Item") && _inventory < _inventorySize) // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚¢ã‚¤ãƒ†ãƒ ã«è§¦ã‚ŒãŸã¨ãã®å‡¦ç†
         {
-            var score = collision.gameObject.GetComponent<LostItemController>().Score; // G‚ê‚½ƒAƒCƒeƒ€‚©‚çƒXƒRƒA‚Ì’l‚ğæ“¾
+            var score = collision.gameObject.GetComponent<LostItemController>().Score; // è§¦ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰ã‚¹ã‚³ã‚¢ã®å€¤ã‚’å–å¾—
             _tmpScore += score;
-            _inventory++; // G‚ê‚½ƒAƒCƒeƒ€‚ğƒŠƒXƒg‚ÉŠi”[
-            _moveSpeed = Mathf.Clamp(_moveSpeed *= 1 - _inventory / (float)_inventorySize, 1f, _maxSpeed); // ƒAƒCƒeƒ€‚ÌŠ”‚É‰‚¶‚ÄˆÚ“®‘¬“x‚ğŒ¸‚ç‚·
+            _inventory++;
+            _moveSpeed = Mathf.Clamp(_moveSpeed *= 1 - _inventory / (_inventorySize + _reduce), _minSpeed, _maxSpeed); // ã‚¢ã‚¤ãƒ†ãƒ ã®æ‰€æŒæ•°ã«å¿œã˜ã¦ç§»å‹•é€Ÿåº¦ã‚’æ¸›ã‚‰ã™
             Debug.Log(_moveSpeed);
         }
-        else if (collision.gameObject.CompareTag("Koban")) // ƒvƒŒƒCƒ„[‚ªŒğ”Ô‚ÌƒRƒ‰ƒCƒ_[‚ÉG‚ê‚½‚Æ‚«‚Ìˆ—
+        else if (collision.gameObject.CompareTag("Koban")) // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒäº¤ç•ªã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã«è§¦ã‚ŒãŸã¨ãã®å‡¦ç†
         {
             _gamemanager.ScoreCount(_tmpScore);
             _tmpScore = 0;
@@ -98,6 +98,7 @@ public class Player : MonoBehaviour
     }
     IEnumerator StunTimer(float time)
     {
+        _animator.enabled = false;
         Sprite tmp = _spriteRenderer.sprite;
         _spriteRenderer.sprite = _stunsprite;
         _isStun = true;
@@ -105,5 +106,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(time);
         _spriteRenderer.sprite = tmp;
         _isStun = false;
+        _animator.enabled = true;
     }
 }

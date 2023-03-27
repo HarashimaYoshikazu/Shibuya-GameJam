@@ -13,7 +13,7 @@ public class LostItemController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }
