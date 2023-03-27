@@ -35,10 +35,10 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        //if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
-        //{
-        //    return;
-        //}
+        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        {
+            return;
+        }
 
         if (_inventory > _inventorySize / 2)
         {
@@ -51,10 +51,10 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        //if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
-        //{
-        //    return;
-        //}
+        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        {
+            return;
+        }
 
         PlayerMove();
     }
