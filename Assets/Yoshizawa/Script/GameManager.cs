@@ -7,6 +7,8 @@ using UnityEngine.Events;
 // 日本語対応
 public class GameManager : MonoBehaviour
 {
+    private static GameManager _instance;
+    public static GameManager Instance;
     [SerializeField]
     private float _timeLimit = 0f;
     [SerializeField]
@@ -25,6 +27,18 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private ResultPanel _resultPanel;
 
+    public bool IsPause = false;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance= this;
+    }
+
     private void Start()
     {
         _pedestal = FindObjectOfType<PedestalController>();
@@ -33,6 +47,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if(IsPause == false)
+        {
+            return;
+        }
         // 制限時間のカウントダウンをする
         _timeLimit = Mathf.Clamp(_timeLimit - Time.deltaTime, 0f, _timeLimit);
         _timeText.text = _timeLimit.ToString("F2");
