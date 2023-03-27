@@ -29,7 +29,7 @@ public class LostItemController : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             _collider2D.enabled = false;
-            _spriteRenderer.sortingOrder = 1000;
+            _spriteRenderer.sortingOrder = -1000;
         }
     }
 }
