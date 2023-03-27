@@ -28,6 +28,11 @@ public abstract class EnemyBase : MonoBehaviour
     [Header("2‚Â‚Ìƒ|ƒWƒVƒ‡ƒ“")]
     protected Value<Transform> _twoPos;
 
+    [SerializeField]
+    [Header("‰¹")]
+    private AudioClip _audioClip = null;
+
+
     #endregion
 
     #region Member Variables
@@ -38,6 +43,8 @@ public abstract class EnemyBase : MonoBehaviour
     private SpriteRenderer _spriteRenderer = null;
     private Animator _animator = null;
     private float _angle = 45f;
+    private bool _isFirst = true;
+    private float _coolTime = 5f;
 
     #endregion
 
@@ -101,12 +108,22 @@ public abstract class EnemyBase : MonoBehaviour
         {
             if (collision.TryGetComponent(out Player player))
             {
+                if (!_isFirst) return;
+                CoolTime();
                 player.Stun(_stunTime);
                 _animator?.SetBool("IsSurprised", true);
+                HachikoSoundManager.Instance.PlayAudioClip(_audioClip);
                 await UniTask.Delay(TimeSpan.FromSeconds(1f));
                 _animator?.SetBool("IsSurprised", false);
             }
         }
+    }
+
+    private async void CoolTime()
+    {
+        _isFirst = false;
+        await UniTask.Delay(TimeSpan.FromSeconds(_coolTime));
+        _isFirst = true;
     }
 
     #endregion

@@ -53,6 +53,7 @@ MonoBehaviour:
   _twoPos:
     _minValue: {fileID: 0}
     _maxValue: {fileID: 0}
+  _audioClip: {fileID: 8300000, guid: 48e75c88bcf4e0746a9cd4a0836a09ef, type: 3}
 --- !u!212 &7027349023144841414
 SpriteRenderer:
   m_ObjectHideFlags: 0
