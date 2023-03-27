@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField, Header("プレイヤーの最低速度")] float _minSpeed = 1;
     [SerializeField, Header("プレイヤーが落とし物を持てる最大数")] int _inventorySize = 10;
     [SerializeField, Header("疲労時に表示する画像のゲームオブジェクト")] GameObject _sweat;
+    [SerializeField, Header("スタンしたときに表示するパーティクル")] ParticleSystem _stunParticle;
     Rigidbody2D _rb;
     float _h;
     float _v;
@@ -34,23 +35,10 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
-        {
-            return;
-        }
-        // 入力の受け取り
-        _h = Input.GetAxisRaw("Horizontal");
-        _v = Input.GetAxisRaw("Vertical");
-
-        // プレイヤーの移動する方向に応じてプレイヤーを反転させる処理
-        if (_h > 0)
-        {
-            this.transform.localScale = new Vector3(-1 * Mathf.Abs(this.transform.localScale.x), this.transform.localScale.y, this.transform.localScale.z);
-        }
-        else if (_h < 0)
-        {
-            this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x), this.transform.localScale.y, this.transform.localScale.z);
-        }
+        //if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        //{
+        //    return;
+        //}
 
         if (_inventory > _inventorySize / 2)
         {
@@ -63,16 +51,12 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
-        {
-            return;
-        }
-        Vector2 dir = new Vector2(_h, _v).normalized;
-        _rb.velocity = dir * _moveSpeed;
+        //if (_isStun || _pedController.IsOnThePedestal == true || GameManager.Instance.IsPause)
+        //{
+        //    return;
+        //}
 
-        // アニメーションの処理
-        _animator.SetFloat("Horizontal", Mathf.Abs(_h));
-        _animator.SetFloat("Vertical", _v);
+        PlayerMove();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -92,6 +76,29 @@ public class Player : MonoBehaviour
             _moveSpeed = _maxSpeed;
         }
     }
+    void PlayerMove()
+    {
+        // 入力の受け取り
+        _h = Input.GetAxisRaw("Horizontal");
+        _v = Input.GetAxisRaw("Vertical");
+
+        // アニメーションの処理
+        _animator.SetFloat("Horizontal", Mathf.Abs(_h));
+        _animator.SetFloat("Vertical", _v);
+
+        // プレイヤーの移動する方向に応じてプレイヤーを反転させる処理
+        if (_h > 0)
+        {
+            this.transform.localScale = new Vector3(-1 * Mathf.Abs(this.transform.localScale.x), this.transform.localScale.y, this.transform.localScale.z);
+        }
+        else if (_h < 0)
+        {
+            this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x), this.transform.localScale.y, this.transform.localScale.z);
+        }
+
+        Vector2 dir = new Vector2(_h, _v).normalized;
+        _rb.velocity = dir * _moveSpeed;
+    }
     public void Stun(float time)
     {
         StartCoroutine(StunTimer(time));
@@ -102,6 +109,7 @@ public class Player : MonoBehaviour
         Sprite tmp = _spriteRenderer.sprite;
         _spriteRenderer.sprite = _stunsprite;
         _isStun = true;
+        _stunParticle.Play();
         _rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(time);
         _spriteRenderer.sprite = tmp;
