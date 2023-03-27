@@ -10,6 +10,7 @@ public class PedestalController : MonoBehaviour
     [SerializeField]
     private float _setUpPosition = 0f;
     public bool IsOnThePedestal { get; private set; } = false;
+    private bool _isMovable = true;
     private GameObject _player = null;
     private Rigidbody2D _playerRigidbody2D = null;
     private Vector2 _setPos = Vector2.zero;
@@ -29,15 +30,24 @@ public class PedestalController : MonoBehaviour
         _collder2D.isTrigger = true;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S))
+        {
+            _playerRigidbody2D.simulated = true;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == _player.gameObject.tag)
         {
             _player.transform.position = _setPos;
 
-            if (_playerRigidbody2D != null)
+            if (_playerRigidbody2D != null && _isMovable)
             {
                 _playerRigidbody2D.simulated = false;
+                _isMovable = false;
             }
 
             IsOnThePedestal = true;
@@ -48,6 +58,7 @@ public class PedestalController : MonoBehaviour
     {
         if (collision.gameObject.tag == _player.gameObject.tag)
         {
+            _isMovable = true;
             IsOnThePedestal = false;
         }
     }
