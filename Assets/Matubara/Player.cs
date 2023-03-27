@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField, Header("プレイヤーの最大速度")] float _maxSpeed;
-    [SerializeField, Header("プレイヤーが落とし物を持てる最大数")] int _inventorySize;
+    [SerializeField, Header("プレイヤーの最大速度")] float _maxSpeed = 10;
+    [SerializeField, Header("プレイヤーの最低速度")] float _minSpeed = 1;
+    [SerializeField, Header("プレイヤーが落とし物を持てる最大数")] int _inventorySize = 10;
     [SerializeField, Header("疲労時に表示する画像のゲームオブジェクト")] GameObject _sweat;
     Rigidbody2D _rb;
     float _h;
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
     SpriteRenderer _spriteRenderer;
     Animator _animator;
     int _tmpScore = 0;
+    [SerializeField] float _reduce = 0;
     
     void Start()
     {
@@ -41,11 +43,6 @@ public class Player : MonoBehaviour
         _h = Input.GetAxisRaw("Horizontal");
         _v = Input.GetAxisRaw("Vertical");
 
-        // アニメーションの処理
-        _animator.SetFloat("Horizontal", Mathf.Abs(_h));
-        _animator.SetFloat("Vertical", _v);
-        _animator.SetFloat("MoveSpeed", _rb.velocity.magnitude);
-
         // プレイヤーの移動する方向に応じてプレイヤーを反転させる処理
         if (_h > 0)
         {
@@ -56,7 +53,7 @@ public class Player : MonoBehaviour
             this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x), this.transform.localScale.y, this.transform.localScale.z);
         }
 
-        if (_moveSpeed < _maxSpeed / 2)
+        if (_inventory > _inventorySize / 2)
         {
             _sweat.SetActive(true);
         }
@@ -73,6 +70,10 @@ public class Player : MonoBehaviour
         }
         Vector2 dir = new Vector2(_h, _v).normalized;
         _rb.velocity = dir * _moveSpeed;
+
+        // アニメーションの処理
+        _animator.SetFloat("Horizontal", Mathf.Abs(_h));
+        _animator.SetFloat("Vertical", _v);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -80,8 +81,8 @@ public class Player : MonoBehaviour
         {
             var score = collision.gameObject.GetComponent<LostItemController>().Score; // 触れたアイテムからスコアの値を取得
             _tmpScore += score;
-            _inventory++; // 触れたアイテムをリストに格納
-            _moveSpeed = Mathf.Clamp(_moveSpeed *= 1 - _inventory / (float)_inventorySize, 1f, _maxSpeed); // アイテムの所持数に応じて移動速度を減らす
+            _inventory++;
+            _moveSpeed = Mathf.Clamp(_moveSpeed *= 1 - _inventory / (_inventorySize + _reduce), _minSpeed, _maxSpeed); // アイテムの所持数に応じて移動速度を減らす
             Debug.Log(_moveSpeed);
         }
         else if (collision.gameObject.CompareTag("Koban")) // プレイヤーが交番のコライダーに触れたときの処理
@@ -98,6 +99,7 @@ public class Player : MonoBehaviour
     }
     IEnumerator StunTimer(float time)
     {
+        _animator.enabled = false;
         Sprite tmp = _spriteRenderer.sprite;
         _spriteRenderer.sprite = _stunsprite;
         _isStun = true;
@@ -105,5 +107,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(time);
         _spriteRenderer.sprite = tmp;
         _isStun = false;
+        _animator.enabled = true;
     }
 }
