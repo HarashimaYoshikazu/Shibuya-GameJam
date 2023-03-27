@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField, Header("プレイヤーが落とし物を持てる最大数")] int _inventorySize = 10;
     [SerializeField, Header("疲労時に表示する画像のゲームオブジェクト")] GameObject _sweat;
     [SerializeField, Header("スタンしたときに表示するパーティクル")] GameObject _stunParticle;
+    [SerializeField] Slider _slider;
     Rigidbody2D _rb;
     float _h;
     float _v;
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     [SerializeField] float _godtime = 0;
     void Start()
     {
+        _slider.maxValue = _inventorySize;
         _rb = GetComponent<Rigidbody2D>();
         _gamemanager = FindObjectOfType<GameManager>();
         _moveSpeed = _maxSpeed;
@@ -69,6 +72,7 @@ public class Player : MonoBehaviour
             _inventory++;
             _moveSpeed = Mathf.Clamp(_moveSpeed *= 1 - _inventory / (_inventorySize + _reduce), _minSpeed, _maxSpeed); // アイテムの所持数に応じて移動速度を減らす
             Debug.Log(_moveSpeed);
+            _slider.value = _inventory;
         }
         else if (collision.gameObject.CompareTag("Koban")) // プレイヤーが交番のコライダーに触れたときの処理
         {
@@ -76,6 +80,7 @@ public class Player : MonoBehaviour
             _tmpScore = 0;
             _inventory = 0;
             _moveSpeed = _maxSpeed;
+            _slider.value = _inventory;
         }
     }
     void PlayerMove()

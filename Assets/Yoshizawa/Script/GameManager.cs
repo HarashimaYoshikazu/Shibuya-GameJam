@@ -45,29 +45,31 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-        _instance= this;
-        IsPause= true;
+        _instance = this;
+        IsPause = true;
     }
 
     private void Start()
     {
         _pedestal = FindObjectOfType<PedestalController>();
-        _scoreText.text = _score.ToString();
+        _scoreText.text = "スコア:" + _score.ToString();
+        _timeText.text = "残り時間:" + _timeLimit.ToString("F2");
+
     }
 
     private void Update()
     {
-        if(IsPause)
+        if (IsPause)
         {
             return;
         }
         // 制限時間のカウントダウンをする
         _timeLimit = Mathf.Clamp(_timeLimit - Time.deltaTime, 0f, _timeLimit);
-        _timeText.text = _timeLimit.ToString("F2");
+        _timeText.text = "残り時間:" + _timeLimit.ToString("F2");
 
         if (_timeLimit == 0f && !_isGameFinish)
         {
-            _resultPanel.SetupResultPanel(_playerName,_score);
+            _resultPanel.SetupResultPanel(_playerName, _score);
             _enemyGenerator.IsEnd = true;
             if (_pedestal.IsOnThePedestal)
             {
@@ -85,7 +87,7 @@ public class GameManager : MonoBehaviour
     public void ScoreCount(int score)
     {
         _score += score;
-        _scoreText.text = _score.ToString();
+        _scoreText.text = "スコア:" + _score.ToString();
     }
 
     private void GameClear()
