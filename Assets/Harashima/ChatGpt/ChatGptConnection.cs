@@ -21,7 +21,7 @@ public class ChatGPTConnection
             new ChatGPTMessageModel() { role = "system", content = messageContent });
     }
 
-    public async UniTask<ChatGPTResponseModel> RequestAsync(string userMessage)
+    public async UniTask<string> RequestAsync(string userMessage)
     {
         //文章生成AIのAPIのエンドポイントを設定
         var apiUrl = "https://api.openai.com/v1/chat/completions";
@@ -57,22 +57,32 @@ public class ChatGPTConnection
         {
             request.SetRequestHeader(header.Key, header.Value);
         }
-
-        await request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.ConnectionError ||
-            request.result == UnityWebRequest.Result.ProtocolError)
+        try
         {
-            Debug.LogError(request.error);
-            throw new Exception();
-        }
-        else
-        {
+            await request.SendWebRequest();
             var responseString = request.downloadHandler.text;
             var responseObject = JsonUtility.FromJson<ChatGPTResponseModel>(responseString);
             Debug.Log("ChatGPT:" + responseObject.choices[0].message.content);
             _messageList.Add(responseObject.choices[0].message);
-            return responseObject;
+            return responseObject.choices[0].message.content;
+        }
+        catch(UnityWebRequestException exception)
+        {
+            Debug.LogWarning(request.error);
+            Debug.Log("ChatGPT:" + "いい名前ワン");
+            return "いい名前ワン";
+        }
+        
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+
+            //throw new Exception();
+        }
+        else
+        {
+
         }
     }
 }

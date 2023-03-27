@@ -44,7 +44,7 @@ public class StartPanel : MonoBehaviour
             _loadingPanel.blocksRaycasts = true;
 
             var responseModel = await chatGPTConnection.RequestAsync(_nameInputField.text);
-            _dogText.text = responseModel.choices[0].message.content;
+            _dogText.text = responseModel;
 
             _loadingPanel.alpha = 0f;
             _loadingPanel.blocksRaycasts = false;

@@ -29,6 +29,18 @@ public class SoundManager : MonoBehaviour
     {
         _audioSource.PlayOneShot(audioClip);
     }
+}
 
-
+public enum AudioClipKind
+{
+    TitleBGM,
+    StageBGM,
+    GameClearBGM,
+    GameOverBGM,
+    UIClick,
+    NameInputReaction,
+    GameStart,
+    DropObject,
+    Enemy,
+    Stun,
 }
