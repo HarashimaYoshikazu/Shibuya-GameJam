@@ -101,6 +101,10 @@ public class Player : MonoBehaviour
     }
     public void Stun(float time)
     {
+        if (_isStun)
+        {
+            return;
+        }
         StartCoroutine(StunTimer(time));
     }
     IEnumerator StunTimer(float time)
