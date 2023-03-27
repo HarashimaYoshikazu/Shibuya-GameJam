@@ -1828,6 +1828,7 @@ MonoBehaviour:
   _dogText: {fileID: 23482275}
   _button: {fileID: 407038257}
   _loadingPanel: {fileID: 1577484951}
+  _apikey: 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
 --- !u!225 &571189137
 CanvasGroup:
   m_ObjectHideFlags: 0
