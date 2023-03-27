@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-    public static GameManager Instance;
+    public static GameManager Instance => _instance;
     [SerializeField]
     private float _timeLimit = 0f;
     [SerializeField]
@@ -32,14 +32,20 @@ public class GameManager : MonoBehaviour
 
     public bool IsPause = false;
 
+    private string _playerName;
+    public void SetPlayerName(string name)
+    {
+        _playerName = name;
+    }
+
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(this.gameObject);
             return;
         }
-        Instance= this;
+        _instance= this;
         IsPause= true;
     }
 
@@ -61,7 +67,8 @@ public class GameManager : MonoBehaviour
 
         if (_timeLimit == 0f && !_isGameFinish)
         {
-            _resultPanel.SetupResultPanel("ああ",100);
+            _resultPanel.SetupResultPanel(_playerName,_score);
+            _enemyGenerator.IsEnd = true;
             if (_pedestal.IsOnThePedestal)
             {
                 GameClear();

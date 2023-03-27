@@ -10,9 +10,9 @@ public class ItemGenerator : MonoBehaviour
     [SerializeField]
     private GameObject[] _item = null;
     [SerializeField]
-    private Vector2 _rangeA = Vector2.zero;
+    private Transform _rangeA ;
     [SerializeField]
-    private Vector2 _rangeB = Vector2.zero;
+    private Transform _rangeB ;
     [SerializeField]
     private float _keepOutRange = 1f;
     [SerializeField]
@@ -31,6 +31,10 @@ public class ItemGenerator : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(GameManager.Instance.IsPause)
+        {
+            return;
+        }
         _timer += Time.fixedDeltaTime;
 
         if (_timer > _interval)
@@ -45,8 +49,8 @@ public class ItemGenerator : MonoBehaviour
         if (_item != null && transform.childCount < _maxGenerate)
         {
             int n = Random.Range(0, _item.Length);
-            float x = Random.Range(_rangeA.x, _rangeB.x);
-            float y = Random.Range(_rangeA.y, _rangeB.y);
+            float x = Random.Range(_rangeA.position.x, _rangeB.position.x);
+            float y = Random.Range(_rangeA.position.y, _rangeB.position.y);
             Vector2 GeneratePoint = new Vector2(x, y);
 
             foreach (var point in _keepOutObject)

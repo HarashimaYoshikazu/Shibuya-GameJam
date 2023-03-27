@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 /// </summary>
 public class ChatGPTConnection
 {
-    private const string _apiKey = "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";
+    private const string _apiKey = "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";
     //会話履歴を保持するリスト
     private readonly List<ChatGPTMessageModel> _messageList = new();
 
@@ -21,7 +21,7 @@ public class ChatGPTConnection
             new ChatGPTMessageModel() { role = "system", content = messageContent });
     }
 
-    public async UniTask<ChatGPTResponseModel> RequestAsync(string userMessage)
+    public async UniTask<string> RequestAsync(string userMessage)
     {
         //文章生成AIのAPIのエンドポイントを設定
         var apiUrl = "https://api.openai.com/v1/chat/completions";
@@ -31,7 +31,7 @@ public class ChatGPTConnection
         //OpenAIのAPIリクエストに必要なヘッダー情報を設定
         var headers = new Dictionary<string, string>
             {
-                {"Authorization", "Bearer " + "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"},
+                {"Authorization", "Bearer " + "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"},
                 {"Content-type", "application/json"},
                 {"X-Slack-No-Retry", "1"}
             };
@@ -57,22 +57,32 @@ public class ChatGPTConnection
         {
             request.SetRequestHeader(header.Key, header.Value);
         }
-
-        await request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.ConnectionError ||
-            request.result == UnityWebRequest.Result.ProtocolError)
+        try
         {
-            Debug.LogError(request.error);
-            throw new Exception();
-        }
-        else
-        {
+            await request.SendWebRequest();
             var responseString = request.downloadHandler.text;
             var responseObject = JsonUtility.FromJson<ChatGPTResponseModel>(responseString);
             Debug.Log("ChatGPT:" + responseObject.choices[0].message.content);
             _messageList.Add(responseObject.choices[0].message);
-            return responseObject;
+            return responseObject.choices[0].message.content;
+        }
+        catch(UnityWebRequestException exception)
+        {
+            Debug.LogWarning(request.error);
+            Debug.Log("ChatGPT:" + "いい名前ワン");
+            return "いい名前ワン";
+        }
+        
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+
+            //throw new Exception();
+        }
+        else
+        {
+
         }
     }
 }

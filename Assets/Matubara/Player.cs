@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField, Header("プレイヤーの最低速度")] float _minSpeed = 1;
     [SerializeField, Header("プレイヤーが落とし物を持てる最大数")] int _inventorySize = 10;
     [SerializeField, Header("疲労時に表示する画像のゲームオブジェクト")] GameObject _sweat;
-    [SerializeField, Header("スタンしたときに表示するパーティクル")] ParticleSystem _stunParticle;
+    [SerializeField, Header("スタンしたときに表示するパーティクル")] GameObject _stunParticle;
     Rigidbody2D _rb;
     float _h;
     float _v;
@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     SpriteRenderer _spriteRenderer;
     Animator _animator;
     int _tmpScore = 0;
-    [SerializeField] float _reduce = 0;
+    [SerializeField,Tooltip("この値が増えるほど、アイテムを拾ったときのスピードの減少率が減る")] float _reduce = 0;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -101,6 +101,10 @@ public class Player : MonoBehaviour
     }
     public void Stun(float time)
     {
+        if (_isStun)
+        {
+            return;
+        }
         StartCoroutine(StunTimer(time));
     }
     IEnumerator StunTimer(float time)
@@ -109,7 +113,7 @@ public class Player : MonoBehaviour
         Sprite tmp = _spriteRenderer.sprite;
         _spriteRenderer.sprite = _stunsprite;
         _isStun = true;
-        _stunParticle.Play();
+        Instantiate(_stunParticle, transform.position, transform.rotation);
         _rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(time);
         _spriteRenderer.sprite = tmp;

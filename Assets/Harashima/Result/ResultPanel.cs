@@ -24,6 +24,7 @@ public class ResultPanel : SceneControllerBase
     {
         _canvasGroup = GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0f;
+        _canvasGroup.blocksRaycasts= false;
         _touchArea.onClick.AddListener(async () =>
         {
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
@@ -34,6 +35,7 @@ public class ResultPanel : SceneControllerBase
     public void SetupResultPanel(string name,int score)
     {
         _canvasGroup.alpha = 1f;
+        _canvasGroup.blocksRaycasts = true;
         SetScore(score,name);
         SetRankingCells(); 
     }
