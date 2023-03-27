@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField, Header("疲労時に表示する画像のゲームオブジェクト")] GameObject _sweat;
     [SerializeField, Header("スタンしたときに表示するパーティクル")] GameObject _stunParticle;
     [SerializeField] Slider _slider;
+    [SerializeField] AudioClip _stunSound;
     Rigidbody2D _rb;
     float _h;
     float _v;
@@ -122,6 +123,7 @@ public class Player : MonoBehaviour
         Sprite tmp = _spriteRenderer.sprite;
         _spriteRenderer.sprite = _stunsprite;
         _isStun = true;
+        HachikoSoundManager.Instance.PlayAudioClip(_stunSound);
         Instantiate(_stunParticle, transform.position, transform.rotation);
         _rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(time);

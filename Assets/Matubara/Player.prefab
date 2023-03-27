@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1111806447
 Transform:
   m_ObjectHideFlags: 0
@@ -105,37 +105,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!1 &2114263804
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2114263805}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2114263805
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114263804}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06, y: -0.61, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3821824124893058291}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3821824124893058303
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +139,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1111806447}
-  - {fileID: 2114263805}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -263,10 +231,12 @@ MonoBehaviour:
   _minSpeed: 1
   _inventorySize: 10
   _sweat: {fileID: 1111806444}
-  _stunParticle: {fileID: 699966988675955232, guid: 851f14059d83a7242a342de2c4020e11, type: 3}
-  _particleSpawnPoint: {fileID: 0}
+  _stunParticle: {fileID: 1993891011918894483, guid: eea6b9c45a494994f94d901680759894, type: 3}
+  _slider: {fileID: 0}
+  _stunSound: {fileID: 8300000, guid: c4bf70f66ce845240ab6a67ffe15a551, type: 3}
   _stunsprite: {fileID: 21300000, guid: cfffc648b49f9d74cb53370d795e0678, type: 3}
   _reduce: 10
+  _godtime: 1
 --- !u!95 &1254896459
 Animator:
   serializedVersion: 4
